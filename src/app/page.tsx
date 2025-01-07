@@ -9,10 +9,10 @@ import image4 from "../images/wind-power-generation-8370867_1280.jpg";
 
 export default function ImageHoverGallery()  {
   const images = [
-    { id: 1, src: image1, text: 'Image 1 Description' },
-    { id: 2, src: image2, text: 'Image 2 Description' },
-    { id: 3, src: image3, text: 'Image 3 Description' },
-    { id: 4, src: image4, text: 'Image 4 Description' },
+    { id: 1, src: image1, text: 'Image 1 Header' },
+    { id: 2, src: image2, text: 'Image 2 Header' },
+    { id: 3, src: image3, text: 'Image 3 Header' },
+    { id: 4, src: image4, text: 'Image 4 Header' },
   ];
 
   return (
