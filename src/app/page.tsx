@@ -1,5 +1,4 @@
 "use client";
-import React from 'react';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import image1 from "../images/mountains-9266137_1280.jpg";

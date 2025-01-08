@@ -13,9 +13,9 @@ export default function RootLayout() {
     <html lang="en">
       <body>
       <div className="p-8">
-    <h1 className="text-2xl font-bold mb-4 text-center">Hover to Expand Images</h1>
-    <ImageHoverGallery />
-  </div>
+        <h1 className="text-2xl font-bold mb-4 text-center">Hover to Expand Images</h1>
+        <ImageHoverGallery />
+      </div>
       </body>
     </html>
   );
