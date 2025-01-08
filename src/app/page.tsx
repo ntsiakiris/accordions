@@ -15,6 +15,8 @@ export default function ImageHoverGallery()  {
   ];
 
   return (
+    <div> 
+      <h1 className="text-2xl font-bold mb-4 text-center">Hover to Expand Images</h1>
     <div className="flex w-full h-80 max-w-4xl mx-auto overflow-hidden">
       {images.map((image) => (
         <motion.div
@@ -42,6 +44,7 @@ export default function ImageHoverGallery()  {
         </motion.div>
       ))}
     </div>
+   </div>
   );
 };
 
