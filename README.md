@@ -1,36 +1,192 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+<script setup>
+import { defineModel, ref } from "vue";
+import formatDate from "../functions/formatDate";
 
-## Getting Started
+// ✅ Bind to parent with v-model
+const tableData = defineModel();
 
-First, run the development server:
+// Store error messages and previous valid values
+const errors = ref(Array(tableData.value.length).fill(""));
+const previousValues = ref(
+  tableData.value.map((item) => ({
+    ENTSOE_DE_DAM_Price: item.ENTSOE_DE_DAM_Price,
+    ENTSOE_GR_DAM_Price: item.ENTSOE_GR_DAM_Price,
+    ENTSOE_FR_DAM_Price: item.ENTSOE_FR_DAM_Price,
+  }))
+);
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+// Validation function
+const validateInput = (event, item, index, key) => {
+  let value = event.target.value.trim();
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+  if (value === "-") {
+    errors.value[index] = "Please enter a valid number.";
+    event.target.value = previousValues.value[index][key];
+    return;
+  }
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+  let numericValue = Number(value);
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+  if (isNaN(numericValue) || numericValue < -2000 || numericValue > 2000) {
+    errors.value[index] = "Value must be between -2000 and 2000.";
+    event.target.value = previousValues.value[index][key];
+    return;
+  }
 
-## Learn More
+  errors.value[index] = "";
+  item[key] = numericValue;
+  previousValues.value[index][key] = numericValue;
+};
+</script>
 
-To learn more about Next.js, take a look at the following resources:
+<template>
+  <div class="table-wrapper">
+    <label for="table">Timeseries Table</label>
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>Timestamp</th>
+            <th>ENTSOE_DE_DAM_Price</th>
+            <th>ENTSOE_GR_DAM_Price</th>
+            <th>ENTSOE_FR_DAM_Price</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(item, index) in tableData" :key="index">
+            <td>
+              <input type="text" :value="formatDate(item.DateTime)" readonly />
+            </td>
+            <td>
+              <div class="input-container">
+                <input
+                  type="number"
+                  v-model="item.ENTSOE_DE_DAM_Price"
+                  @input="validateInput($event, item, index, 'ENTSOE_DE_DAM_Price')"
+                />
+                <span v-if="errors[index]" class="error-message">{{ errors[index] }}</span>
+              </div>
+            </td>
+            <td>
+              <div class="input-container">
+                <input
+                  type="number"
+                  v-model="item.ENTSOE_GR_DAM_Price"
+                  @input="validateInput($event, item, index, 'ENTSOE_GR_DAM_Price')"
+                />
+                <span v-if="errors[index]" class="error-message">{{ errors[index] }}</span>
+              </div>
+            </td>
+            <td>
+              <div class="input-container">
+                <input
+                  type="number"
+                  v-model="item.ENTSOE_FR_DAM_Price"
+                  @input="validateInput($event, item, index, 'ENTSOE_FR_DAM_Price')"
+                />
+                <span v-if="errors[index]" class="error-message">{{ errors[index] }}</span>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</template>
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+<script setup>
+import { defineModel, ref } from "vue";
+import formatDate from "../functions/formatDate";
 
-## Deploy on Vercel
+// ✅ Bind to parent with v-model
+const tableData = defineModel();
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+// Store error messages and previous valid values
+const errors = ref(Array(tableData.value.length).fill(""));
+const previousValues = ref(
+  tableData.value.map((item) => ({
+    ENTSOE_DE_DAM_Price: item.ENTSOE_DE_DAM_Price,
+    ENTSOE_GR_DAM_Price: item.ENTSOE_GR_DAM_Price,
+    ENTSOE_FR_DAM_Price: item.ENTSOE_FR_DAM_Price,
+  }))
+);
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+// Validation function
+const validateInput = (event, item, index, key) => {
+  let value = event.target.value.trim();
+
+  if (value === "-") {
+    errors.value[index] = "Please enter a valid number.";
+    event.target.value = previousValues.value[index][key];
+    return;
+  }
+
+  let numericValue = Number(value);
+
+  if (isNaN(numericValue) || numericValue < -2000 || numericValue > 2000) {
+    errors.value[index] = "Value must be between -2000 and 2000.";
+    event.target.value = previousValues.value[index][key];
+    return;
+  }
+
+  errors.value[index] = "";
+  item[key] = numericValue;
+  previousValues.value[index][key] = numericValue;
+};
+</script>
+
+<template>
+  <div class="table-wrapper">
+    <label for="table">Timeseries Table</label>
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>Timestamp</th>
+            <th>ENTSOE_DE_DAM_Price</th>
+            <th>ENTSOE_GR_DAM_Price</th>
+            <th>ENTSOE_FR_DAM_Price</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(item, index) in tableData" :key="index">
+            <td>
+              <input type="text" :value="formatDate(item.DateTime)" readonly />
+            </td>
+            <td>
+              <div class="input-container">
+                <input
+                  type="number"
+                  v-model="item.ENTSOE_DE_DAM_Price"
+                  @input="validateInput($event, item, index, 'ENTSOE_DE_DAM_Price')"
+                />
+                <span v-if="errors[index]" class="error-message">{{ errors[index] }}</span>
+              </div>
+            </td>
+            <td>
+              <div class="input-container">
+                <input
+                  type="number"
+                  v-model="item.ENTSOE_GR_DAM_Price"
+                  @input="validateInput($event, item, index, 'ENTSOE_GR_DAM_Price')"
+                />
+                <span v-if="errors[index]" class="error-message">{{ errors[index] }}</span>
+              </div>
+            </td>
+            <td>
+              <div class="input-container">
+                <input
+                  type="number"
+                  v-model="item.ENTSOE_FR_DAM_Price"
+                  @input="validateInput($event, item, index, 'ENTSOE_FR_DAM_Price')"
+                />
+                <span v-if="errors[index]" class="error-message">{{ errors[index] }}</span>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</template>
