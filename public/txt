@@ -93,3 +93,52 @@ const validateInput = (event, item, index, key) => {
     </div>
   </div>
 </template>
+
+
+
+<script setup>
+import { ref } from "vue";
+import TableComponent from "./components/DataTable.vue";
+import Chart from "./components/Chart.vue";
+import DateRangePicker from "./components/DateRangePicker.vue";
+import jsonData from "./timeseries.json";
+
+// Create a reactive state for the table and chart data
+const tableData = ref(jsonData);
+const chartData = ref(jsonData);
+
+// Function to filter table and chart data based on the selected date range
+const filterData = ({ startDate, endDate }) => {
+  if (!startDate || !endDate) return;
+
+  const start = new Date(startDate);
+  start.setHours(0, 0, 0, 0);
+
+  const end = new Date(endDate);
+  end.setHours(23, 59, 59, 999);
+
+  const filteredData = jsonData.filter((item) => {
+    const itemDate = new Date(item.DateTime);
+    return itemDate >= start && itemDate <= end;
+  });
+
+  if (filteredData.length === 0) {
+    alert("No data available for the selected date range.");
+  }
+
+  // Update both table and chart data
+  tableData.value = filteredData;
+  chartData.value = filteredData;
+};
+</script>
+
+<template>
+  <div>
+    <DateRangePicker @filterData="filterData" class="filter-container" />
+    <div class="app-container">
+      <!-- ✅ Pass tableData with v-model for two-way binding -->
+      <TableComponent v-model="tableData" />
+      <Chart :chartData="chartData" />
+    </div>
+  </div>
+</template>
